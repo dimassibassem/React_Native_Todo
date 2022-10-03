@@ -3,10 +3,11 @@ import {View, Text, TouchableOpacity, StyleSheet} from "react-native";
 
 const Tasks: React.FC<{ task: string }> = ({task}) => {
     return (
-        <View style={styles.item}>
-            <View style={styles.itemLeft}>
+        <View
+            className="bg-green-50 rounded-tl-3xl rounded-br-3xl rounded-tr-3xl p-6 flex-row items-center mb-6 justify-between">
+            <View className="flex-row items-center flex-wrap ">
                 <TouchableOpacity style={styles.square}></TouchableOpacity>
-                <Text style={styles.itemText}>{task}</Text>
+                <Text className="max-w-[80%]">{task}</Text>
             </View>
             <View style={styles.circular}>
             </View>
@@ -15,20 +16,7 @@ const Tasks: React.FC<{ task: string }> = ({task}) => {
 };
 
 const styles = StyleSheet.create({
-    item: {
-        backgroundColor: '#fff',
-        padding: 15,
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-    },
-    itemLeft: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-    },
+
     square: {
         width: 24,
         height: 24,
@@ -36,9 +24,6 @@ const styles = StyleSheet.create({
         opacity: 0.4,
         borderRadius: 5,
         marginRight: 15,
-    },
-    itemText: {
-        maxWidth: '80%',
     },
     circular: {
         width: 12,
