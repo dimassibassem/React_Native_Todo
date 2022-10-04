@@ -1,6 +1,7 @@
 import {
-    KeyboardAvoidingView,
-    Platform,
+    Alert,
+    KeyboardAvoidingView, Modal,
+    Platform, Pressable,
     SafeAreaView,
     ScrollView,
     Text,
@@ -10,28 +11,66 @@ import {
 } from 'react-native';
 import Tasks from "./components/Tasks";
 import "./app.d";
-import {useId, useState} from "react";
+import {useId, useRef, useState} from "react";
 
 export default function App() {
     const [tasks, setTasks] = useState<string[]>([]);
     const [input, setInput] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+    const [taskIndex, setTaskIndex] = useState(-1);
+
     const handleAddTask = () => {
         setTasks([...tasks, input]);
         setInput('');
     }
     const id = useId()
+    const scrollViewRef = useRef()
     return (
         <SafeAreaView className="flex-1 bg-blue-400">
             <Text className=" pt-8 px-4 font-bold text-2xl">Today Tasks</Text>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                }}>
+                <View className="flex-1 justify-center items-center mt-8">
+                    <View className="m-8 bg-white rounded-xl p-12 items-center shadow-blue-900 shadow-2xl ">
+                        <Text className="font-semibold items-center text-black mb-4">{tasks[taskIndex]}</Text>
+                        <View className="flex-row ">
+                            <Pressable
+                                className="rounded-3xl p-3 bg-gray-400 m-1"
+                                onPress={() => setModalVisible(!modalVisible)}
+                            >
+                                <Text className="font-semibold items-center text-white ">Hide Modal</Text>
+                            </Pressable>
+                            <Pressable className="rounded-3xl p-3 bg-red-500 m-1"
+                                       onPress={() => {
+                                           setTasks(tasks.filter((task, index) => index !== taskIndex))
+                                           setModalVisible(!modalVisible)
+                                       }}>
+                                <Text className="font-semibold items-center text-white ">Delete Task</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <ScrollView
                 className="pt-4 px-4"
-                ref={ref => this.scrollView = ref}
-                onContentSizeChange={(contentWidth, contentHeight) => {
-                    this.scrollView.scrollToEnd({animated: true});
-                }}>
+                ref={scrollViewRef}
+                onContentSizeChange={() => scrollViewRef.current.scrollToEnd({animated: true})}
+            >
                 <View className="mt-8">
                     {tasks.map((task, i) => (
-                        <Tasks key={id + i} task={task}/>
+                        <TouchableOpacity key={id + i}
+                                          onLongPress={() => {
+                                              setModalVisible(true)
+                                              setTaskIndex(i)
+                                          }}>
+                            <Tasks task={task}/>
+                        </TouchableOpacity>
                     ))}
                 </View>
             </ScrollView>
@@ -55,4 +94,5 @@ export default function App() {
         </SafeAreaView>
     );
 }
+
 
