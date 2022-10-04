@@ -18,7 +18,6 @@ export default function App() {
     const [input, setInput] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [taskIndex, setTaskIndex] = useState(-1);
-
     const handleAddTask = () => {
         setTasks([...tasks, input]);
         setInput('');
@@ -27,7 +26,7 @@ export default function App() {
     const scrollViewRef = useRef()
     return (
         <SafeAreaView className="flex-1 bg-blue-400">
-            <Text className=" pt-8 px-4 font-bold text-2xl">Today Tasks</Text>
+            <Text className="pt-8 px-4 font-bold text-2xl">Today Tasks</Text>
             <Modal
                 animationType="slide"
                 transparent={true}
